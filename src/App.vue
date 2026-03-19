@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { authState } from './store/auth';
+//import { authState } from './store/auth';
+import { useAuthStore } from './store/auth';
 import { useRouter } from 'vue-router';
 
+const authStore = useAuthStore(); // ストアを初期化
 const router = useRouter();
 
 const handleLogout = () => {
-  authState.logout();
+  authStore.logout();
   router.push('/login');
 };
 </script>
@@ -17,8 +19,8 @@ const handleLogout = () => {
       
       <v-spacer></v-spacer>
 
-      <div v-if="authState.isAuthenticated" class="d-flex align-center mr-4">
-        <span class="mr-3">{{ authState.username }} さん</span>
+      <div v-if="authStore.isAuthenticated" class="d-flex align-center mr-4">
+        <span class="mr-3">{{ authStore.username }} さん</span>
         <v-btn variant="outlined" color="white" @click="handleLogout" size="small">
           ログアウト
         </v-btn>

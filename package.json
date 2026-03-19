@@ -12,6 +12,8 @@
     "@mdi/js": "^7.4.47",
     "axios": "^1.13.6",
     "mdi-svg": "^2.2.43",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
     "vue": "^3.5.30",
     "vue-router": "^4.6.4",
     "vuetify": "^3.12.3"

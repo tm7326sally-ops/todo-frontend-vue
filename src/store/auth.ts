@@ -1,26 +1,32 @@
-import { reactive } from 'vue';
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
-// ログイン状態を管理するオブジェクト
-export const authState = reactive({
-  token: localStorage.getItem('token') || '',
-  username: localStorage.getItem('username') || '',
-  isAuthenticated: !!localStorage.getItem('token'), // トークンがあれば true
+export const useAuthStore = defineStore('auth', () => {
+  // --- State ---
+  const isAuthenticated = ref(false)
+  const username = ref('')
+  const token = ref('')
 
-  // ログイン成功時に呼ぶメソッド
-  login(token: string, username: string) {
-    this.token = token;
-    this.username = username;
-    this.isAuthenticated = true;
-    localStorage.setItem('token', token);
-    localStorage.setItem('username', username);
-  },
-
-  // ログアウト時に呼ぶメソッド
-  logout() {
-    this.token = '';
-    this.username = '';
-    this.isAuthenticated = false;
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
+  // --- Actions ---
+  const login = (newToken: string, newUsername: string) => {
+    token.value = newToken
+    username.value = newUsername
+    isAuthenticated.value = true
   }
-});
+
+  const logout = () => {
+    token.value = ''
+    username.value = ''
+    isAuthenticated.value = false
+  }
+
+  return {
+    isAuthenticated,
+    username,
+    token,
+    login,
+    logout
+  }
+}, {
+  persist: true // リロードしても token 等を保持する設定
+})

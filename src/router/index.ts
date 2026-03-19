@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { authState } from '../store/auth';
+//import { authState } from '../store/auth';
+import { useAuthStore } from '../store/auth';
 import TodoList from '../components/TodoList.vue';
 import Login from '../components/Login.vue';
-// 後で作る登録画面用（仮）
 import Register from '../components/Register.vue'; 
 
 const routes = [
@@ -23,10 +23,12 @@ const router = createRouter({
 
 // ナビゲーションガード（プロの実装：ページ遷移前のチェック）
 router.beforeEach((to, _from, next) => {
-  if (to.meta.requiresAuth && !authState.isAuthenticated) {
+  const authStore = useAuthStore(); // ここでストアを呼び出す
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     // 認証が必要なページなのにログインしてなければログイン画面へ
     next('/login');
-  } else if ((to.path === '/login' || to.path === '/signup') && authState.isAuthenticated) {
+  } else if ((to.path === '/login' || to.path === '/signup') && authStore.isAuthenticated) {
     // ログイン済みならログイン・登録画面には行かせずTODOへ
     next('/todos');
   } else {
